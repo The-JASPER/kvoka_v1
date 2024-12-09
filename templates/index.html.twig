@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Добавить запись</h1>
+
+    {{ form_start(entryForm) }}
+    {{ form_widget(entryForm) }}
+    <button type="submit">Сохранить</button>
+    {{ form_end(entryForm) }}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}
