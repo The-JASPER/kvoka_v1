@@ -30,25 +30,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        // Возвращает уникальный идентификатор пользователя (например, email или username)
         return $this->username;
-    }
-
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
     }
 
     public function getRoles(): array
     {
-        // Гарантируем, что роль ROLE_USER всегда присутствует
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
 
@@ -76,7 +62,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void
     {
-        // Если есть временные чувствительные данные, очищайте их здесь.
-        // Пример: $this->plainPassword = null;
     }
 }

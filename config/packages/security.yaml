@@ -1,17 +1,14 @@
 security:
-    # Провайдеры пользователей
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\User
                 property: username
 
-    # Настройки хэширования паролей
     password_hashers:
         App\Entity\User:
             algorithm: auto
 
-    # Firewall
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -24,8 +21,9 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+            entry_point: App\Security\AppCustomAuthenticator
 
-    # Права доступа
     access_control:
         - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, roles: ROLE_USER }
