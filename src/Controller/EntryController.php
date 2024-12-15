@@ -3,46 +3,43 @@
 namespace App\Controller;
 
 use App\Entity\Entry;
-use App\Form\EntryFormType;
+use App\Entity\Image;
+use App\Form\EntryType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class EntryController extends AbstractController
 {
-    #[Route("/", name: "app_entry")]
-    public function index(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    #[Route('/entry/new', name: 'entry_new')]
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $entry = new Entry();
-        $form = $this->createForm(EntryFormType::class, $entry);
+        $form = $this->createForm(EntryType::class, $entry);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $images = $form->get('images')->getData();
-            $imagePaths = [];
+            // Обработка изображений
+            $imageFiles = $form->get('images')->getData();
+            foreach ($imageFiles as $imageFile) {
+                $filename = uniqid() . '.' . $imageFile->guessExtension();
+                $imageFile->move($this->getParameter('images_directory'), $filename);
 
-            foreach ($images as $image) {
-                $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
-
-                $image->move($this->getParameter('images_directory'), $newFilename);
-                $imagePaths[] = $newFilename;
+                $image = new Image();
+                $image->setFilename($filename);
+                $entry->addImage($image);
             }
 
-            $entry->setImages($imagePaths);
             $entityManager->persist($entry);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Запись сохранена');
-            return $this->redirectToRoute('app_entry');
+            return $this->redirectToRoute('entry_success'); // Замените на ваш маршрут
         }
 
-        return $this->render('entry/index.html.twig', [
-            'entryForm' => $form->createView(),
+        return $this->render('entry/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 }
