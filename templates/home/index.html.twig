@@ -1,6 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Добро пожаловать на главную страницу!</h1>
-    <p>Это ваша домашняя страница.</p>
+    <h1>Добавить запись</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ form_start(entryForm) }}
+    {{ form_widget(entryForm) }}
+    <button type="submit">Сохранить</button>
+    {{ form_end(entryForm) }}
 {% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Детали записи</h1>
+    <ul>
+        <li><strong>ID:</strong> {{ entry.id }}</li>
+        <li><strong>Текст:</strong> {{ entry.text }}</li>
+        <li><strong>Email:</strong> {{ entry.email }}</li>
+        <li><strong>Цвет:</strong> {{ entry.color }}</li>
+        <li><strong>Фигура:</strong> {{ entry.shape }}</li>
+        <li><strong>Изображения:</strong></li>
+        <ul>
+            {% for image in entry.images %}
+                <li><img src="/images/{{ image }}" alt="Изображение" width="100"></li>
+            {% endfor %}
+        </ul>
+    </ul>
+    <a href="{{ path('admin_dashboard') }}">Вернуться к списку</a>
+{% endblock %}

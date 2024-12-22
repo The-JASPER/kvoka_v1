@@ -34,6 +34,6 @@ class SecurityController extends AbstractController
      */
     public function logout(): void
     {
-        // Этот метод может быть пустым, он будет перехвачен системой безопасности
+
     }
 }

@@ -33,6 +33,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
+    // Добавлен метод getUsername для обратной совместимости
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
     public function getRoles(): array
     {
         $roles = $this->roles;

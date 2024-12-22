@@ -8,3 +8,16 @@ app_login:
 
 app_logout:
     path: /logout
+
+admin_dashboard:
+    path: /admin
+    controller: App\Controller\AdminController::index
+
+admin_entry_view:
+    path: /admin/entry/{id}
+    controller: App\Controller\AdminController::view
+
+admin_entry_edit:
+    path: /admin/entry/{id}/edit
+    controller: App\Controller\AdminController::edit
+
